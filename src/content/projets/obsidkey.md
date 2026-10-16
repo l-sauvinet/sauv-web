@@ -12,10 +12,10 @@ stack: [Vue 3, TypeScript, Tailwind CSS, Firebase, Web Crypto API, Argon2id]
 demo: https://obsidkey.sauv-web.fr
 demoLabel: Ouvrir ObsidKey
 access: Accès sur demande, contactez-moi pour obtenir un compte.
+repo: https://github.com/l-sauvinet/ObsidKey
 # TODO: ajouter une capture d'écran (src/assets/projets/obsidkey.png) puis décommenter :
 # cover: ../../assets/projets/obsidkey.png
 # coverAlt: Coffre ObsidKey affichant la liste des mots de passe
-# repo: https://github.com/TODO/obsidkey
 ---
 
 ObsidKey est en ligne sur [obsidkey.sauv-web.fr](https://obsidkey.sauv-web.fr). Les comptes sont créés sur demande : [contactez-moi](/contact/) pour en obtenir un.
