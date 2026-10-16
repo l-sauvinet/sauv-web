@@ -1,0 +1,129 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projets');
+  return projects.map((project) => ({ params: { slug: project.id }, props: { project } }));
+}
+
+interface Props {
+  project: CollectionEntry<'projets'>;
+}
+
+const { project } = Astro.props;
+const { title, summary, category, status, year, stack, logo, color, demo, demoLabel, repo, access } = project.data;
+const { Content } = await render(project);
+
+const others = (await getCollection('projets', (entry) => entry.id !== project.id)).sort((a, b) => a.data.order - b.data.order).slice(0, 2);
+---
+
+<BaseLayout title={`${title} : ${category}`} description={summary} type="article" crumbs={[{ label: 'Réalisations', href: '/realisations/' }, { label: title }]}>
+  <article style={`--project: ${color}`}>
+    <header class="relative overflow-hidden border-b border-border">
+      <div class="detail-stripe left-[62%] w-[14%]" aria-hidden="true"></div>
+      <div class="detail-stripe detail-stripe-solid left-[80%] w-[9%]" aria-hidden="true"></div>
+      <div class="container-site relative grid gap-10 py-14 sm:py-20 lg:grid-cols-[1.4fr_1fr] lg:items-center">
+        <div>
+          <p class="project-accent label-mono" data-reveal>{category} · {year} · {status}</p>
+          <h1 class="mt-3 text-[clamp(2.4rem,11vw,4.5rem)] italic" style="font-stretch: 125%; font-weight: 900; --reveal-delay: 60ms" data-reveal>
+            {title}
+          </h1>
+          <p class="mt-6 max-w-xl text-lg text-muted" data-reveal style="--reveal-delay: 120ms">{summary}</p>
+          <div class="mt-8 flex flex-col items-start gap-5 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-6" data-reveal style="--reveal-delay: 180ms">
+            {
+              demo && (
+                <a href={demo} class="slant-solid" rel="noopener" target="_blank">
+                  <span>
+                    {demoLabel} ↗<span class="sr-only"> (nouvel onglet)</span>
+                  </span>
+                </a>
+              )
+            }
+            {
+              repo && (
+                <a href={repo} class="btn-ghost" rel="noopener" target="_blank">
+                  Code source sur GitHub ↗<span class="sr-only"> (nouvel onglet)</span>
+                </a>
+              )
+            }
+          </div>
+          {access && <p class="mt-5 text-sm text-muted italic">{access}</p>}
+        </div>
+        {
+          logo && (
+            <img
+              src={logo.src}
+              alt={`Logo ${title}`}
+              width={logo.width}
+              height={logo.height}
+              class="detail-logo mx-auto h-28 w-auto sm:h-56"
+            />
+          )
+        }
+      </div>
+    </header>
+
+    <div class="container-site grid gap-12 py-16 lg:grid-cols-[1fr_18rem] lg:gap-20">
+      <div class="prose-site max-w-2xl">
+        <Content />
+      </div>
+      <aside class="lg:sticky lg:top-40 lg:self-start" aria-label="Technologies utilisées">
+        <h2 class="label-mono">Technologies</h2>
+        <ul class="mt-4 flex flex-wrap gap-2">
+          {stack.map((tech) => <li class="rounded-sm border border-border px-2.5 py-1 text-sm text-muted">{tech}</li>)}
+        </ul>
+      </aside>
+    </div>
+  </article>
+
+  {
+    others.length > 0 && (
+      <section class="border-t border-border bg-bg-alt py-20" aria-labelledby="autres-titre">
+        <div class="container-site">
+          <h2 id="autres-titre" class="text-3xl italic" style="font-stretch: 118%; font-weight: 900">
+            Autres réalisations
+          </h2>
+          <div class="mt-10 grid gap-6 md:grid-cols-2">
+            {others.map((other) => (
+              <div class="flex">
+                <ProjectCard project={other} />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <CtaBand />
+</BaseLayout>
+
+<style>
+  .detail-stripe {
+    position: absolute;
+    top: -10%;
+    bottom: -10%;
+    transform: skewX(-22deg);
+    border: 1px solid color-mix(in srgb, var(--project) 60%, transparent);
+    box-shadow: 0 0 24px color-mix(in srgb, var(--project) 25%, transparent);
+  }
+
+  .detail-stripe-solid {
+    background: color-mix(in srgb, var(--project) 18%, transparent);
+  }
+
+  .detail-logo {
+    filter: drop-shadow(0 0 40px color-mix(in srgb, var(--project) 50%, transparent));
+  }
+
+  .project-accent {
+    color: color-mix(in srgb, var(--project) 62%, #000);
+  }
+
+  :global([data-theme='dark']) .project-accent {
+    color: var(--project);
+  }
+</style>

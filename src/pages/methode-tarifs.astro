@@ -1,0 +1,140 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { site, responseDelay } from '../data/site';
+
+const steps = [
+  {
+    title: 'Premier échange',
+    text: `Vous m'expliquez votre projet, par message, téléphone ou visio. Je vous réponds sous ${responseDelay}. Cet échange est gratuit et sans engagement.`,
+  },
+  {
+    title: 'Devis détaillé',
+    text: "Je découpe le projet en étapes et j'estime le temps de chacune. Vous savez exactement ce qui sera fait et combien ça coûtera.",
+  },
+  {
+    title: 'Développement par étapes',
+    text: "Je développe le projet par morceaux et je vous montre régulièrement l'avancement. Vous pouvez réagir et ajuster en cours de route.",
+  },
+  {
+    title: 'Mise en ligne',
+    text: "Je m'occupe de l'installation, de la configuration et des tests. Je vous explique comment utiliser votre outil.",
+  },
+  {
+    title: 'Suivi et évolutions',
+    text: 'Après la mise en ligne, je reste disponible pour corriger, mettre à jour et ajouter de nouvelles fonctionnalités.',
+  },
+];
+
+const included = [
+  'Un devis gratuit et détaillé, étape par étape',
+  'Des points réguliers pour suivre l’avancement',
+  'Le code source et les accès vous appartiennent',
+  'Une explication claire pour prendre l’outil en main',
+];
+
+const faq = [
+  {
+    question: 'Combien va coûter mon projet ?',
+    answer: `Je facture au temps passé, ${site.hourlyRate} € de l'heure. Avant de commencer, je vous envoie un devis gratuit qui estime le nombre d'heures pour chaque étape. Vous validez avant que je commence.`,
+  },
+  {
+    question: 'Pourquoi un tarif horaire plutôt qu’un forfait ?',
+    answer:
+      "Parce que vous ne payez que le travail réellement fait. Si une fonctionnalité s'avère plus simple que prévu, vous payez moins. Et si vous changez d'avis en cours de route, on ajuste sans tout renégocier.",
+  },
+  {
+    question: 'Le code m’appartient-il ?',
+    answer:
+      "Oui. Une fois le travail payé, le code source et tous les accès (hébergement, nom de domaine, comptes) sont à vous. Vous restez libre de faire évoluer le projet avec qui vous voulez.",
+  },
+  {
+    question: 'Travaillez-vous à distance ?',
+    answer:
+      'Oui, je travaille avec des clients partout en France. Si vous êtes autour de Chambéry ou en Savoie, on peut aussi se rencontrer.',
+  },
+  {
+    question: 'Pourquoi n’y a-t-il pas de TVA ?',
+    answer: `Sauv'Web est une micro-entreprise qui bénéficie de la franchise en base de TVA (${site.vatMention}). Le prix indiqué est donc le prix que vous payez.`,
+  },
+];
+---
+
+<BaseLayout
+  crumbs={[{ label: 'Méthode & tarifs' }]}
+  title="Méthode et tarifs"
+  description={`Comment se déroule un projet avec Sauv'Web, développeur freelance à Chambéry : échange gratuit, devis détaillé, développement par étapes. À partir de ${site.hourlyRate} €/h.`}
+>
+  <PageHeader
+    eyebrow="Méthode & tarifs"
+    title="Un cadre clair, du premier échange au suivi"
+    intro="Pas de jargon ni de mauvaise surprise : vous savez à chaque étape ce qui est fait, ce qui reste à faire et ce que ça coûte."
+  />
+
+  <section class="py-20" aria-labelledby="etapes-titre">
+    <div class="container-site">
+      <SectionHeading id="etapes-titre" eyebrow="La méthode" title="Comment se déroule une mission" />
+      <ol class="mt-12 grid gap-px overflow-hidden rounded-lg border border-border bg-border md:grid-cols-5">
+        {
+          steps.map((step, index) => (
+            <li class="bg-bg p-6" data-reveal style={`--reveal-delay: ${index * 60}ms`}>
+              <span class="font-display text-4xl font-black text-accent-text italic" style="font-stretch: 125%">
+                {String(index + 1).padStart(2, '0')}
+              </span>
+              <h3 class="mt-4 text-lg">{step.title}</h3>
+              <p class="mt-2 text-sm text-muted">{step.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="border-t border-border bg-bg-alt py-20" aria-labelledby="tarif-titre">
+    <div class="container-site grid gap-12 lg:grid-cols-[1fr_1.1fr] lg:items-center">
+      <SectionHeading id="tarif-titre" eyebrow="Le tarif" title="Un prix simple, au temps passé">
+        <p class="mt-5 text-lg text-muted">
+          Que ce soit pour créer une application, corriger un bug ou vous conseiller, le tarif est le même. Le devis vous
+          dit combien d'heures prévoir, avant tout engagement.
+        </p>
+      </SectionHeading>
+
+      <div class="price-card relative overflow-hidden rounded-lg border border-border bg-surface p-8 sm:p-10" data-reveal style="--reveal-delay: 100ms">
+        <p class="label-mono">À partir de</p>
+        <p class="mt-2 flex items-baseline gap-2">
+          <span class="font-display text-7xl font-black text-primary italic" style="font-stretch: 125%">{site.hourlyRate}&nbsp;€</span>
+          <span class="text-xl text-muted">/ heure</span>
+        </p>
+        <p class="mt-2 font-semibold text-accent-text">Devis gratuit et détaillé avant toute mission</p>
+        <ul class="prose-site mt-8 text-base">
+          {included.map((item) => <li>{item}</li>)}
+        </ul>
+        <p class="mt-8 text-xs text-muted">{site.vatMention}.</p>
+        <a href="/contact/" class="slant-solid mt-8"><span>Demander un devis gratuit</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-t border-border py-20" aria-labelledby="faq-titre">
+    <div class="container-site grid gap-12 lg:grid-cols-[1fr_1.6fr]">
+      <SectionHeading id="faq-titre" eyebrow="Questions fréquentes" title="Ce qu’on me demande souvent" />
+      <div class="border-t border-border" data-reveal>
+        {
+          faq.map((item) => (
+            <details class="group border-b border-border">
+              <summary class="flex cursor-pointer list-none items-center justify-between gap-6 py-5 font-semibold text-primary [&::-webkit-details-marker]:hidden">
+                {item.question}
+                <span class="text-2xl leading-none text-accent-text transition-transform group-open:rotate-45" aria-hidden="true">+</span>
+              </summary>
+              <p class="pb-6 text-muted">{item.answer}</p>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CtaBand />
+</BaseLayout>

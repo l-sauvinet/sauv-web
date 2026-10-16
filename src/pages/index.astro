@@ -1,0 +1,141 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SpeedStripes from '../components/SpeedStripes.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { services } from '../data/services';
+import { site } from '../data/site';
+
+const projects = (await getCollection('projets', ({ data }) => data.featured)).sort((a, b) => a.data.order - b.data.order);
+
+const promises = [
+  {
+    title: 'Un seul interlocuteur',
+    text: "Vous parlez directement à la personne qui conçoit et code votre projet. Pas d'intermédiaire, pas d'information perdue.",
+  },
+  {
+    title: 'Un devis clair, avant tout',
+    text: `${site.hourlyRate} €/h, avec une estimation détaillée et gratuite. Vous savez ce que vous payez avant que je commence.`,
+  },
+  {
+    title: 'Un code qui vous appartient',
+    text: 'Le code source et les accès sont à vous. Vous restez libre de faire évoluer le projet avec qui vous voulez.',
+  },
+  {
+    title: 'Toujours joignable après',
+    text: 'Une question, un bug, une nouvelle idée : je reste disponible une fois le projet en ligne.',
+  },
+];
+---
+
+<BaseLayout title={site.name}>
+  <section class="relative overflow-hidden">
+    <div class="container-site grid items-center gap-10 py-12 sm:gap-12 sm:py-16 lg:min-h-[calc(100svh-5rem)] lg:grid-cols-[1.15fr_1fr] lg:py-20">
+      <div class="relative z-10">
+        <p class="flex flex-col items-start gap-1 sm:flex-row sm:items-baseline sm:gap-3" data-reveal>
+          <span class="brand-name text-2xl text-primary">Sauv'Web</span>
+          <span class="label-mono text-accent-text">Développeur freelance à Chambéry</span>
+        </p>
+        <h1
+          class="mt-5 text-[clamp(1.9rem,8.6vw,3.75rem)] leading-[1] italic sm:text-6xl lg:text-7xl"
+          style="font-stretch: 125%; font-weight: 900; --reveal-delay: 60ms"
+          data-reveal
+        >
+          Développeur d'applications <span class="text-accent-text">web&nbsp;&amp;&nbsp;mobiles</span> à&nbsp;Chambéry
+        </h1>
+        <p class="mt-7 max-w-lg text-lg text-muted" data-reveal style="--reveal-delay: 120ms">
+          Je conçois des outils sur mesure pour les TPE, PME et indépendants. Un seul interlocuteur, de l'idée à la mise
+          en ligne.
+        </p>
+        <div class="mt-9 grid gap-3 sm:flex sm:flex-wrap sm:gap-4" data-reveal style="--reveal-delay: 180ms">
+          <a href="/contact/" class="slant-solid"><span>Demander un devis</span></a>
+          <a href="/realisations/" class="slant-outline"><span>Voir mes réalisations</span></a>
+        </div>
+      </div>
+
+      <SpeedStripes class="pointer-events-none absolute inset-x-0 top-24 h-[26rem] opacity-[0.16] lg:pointer-events-auto lg:relative lg:inset-auto lg:top-auto lg:h-[28rem] lg:opacity-100" />
+    </div>
+  </section>
+
+  <section class="border-t border-border py-24" aria-labelledby="services-titre">
+    <div class="container-site">
+      <div class="flex flex-wrap items-end justify-between gap-6">
+        <SectionHeading id="services-titre" eyebrow="Services" title="Ce que je fais pour vous" />
+        <a href="/services/" class="btn-ghost" data-reveal>Tous les services →</a>
+      </div>
+
+      <ol class="mt-12 border-t border-border">
+        {
+          services.map((service, index) => (
+            <li data-reveal style={`--reveal-delay: ${index * 50}ms`}>
+              <a href={`/services/#${service.id}`} class="service-row group relative grid grid-cols-[1.75rem_1fr_auto] items-center gap-3 border-b border-border px-5 py-5 sm:grid-cols-[3.5rem_1fr_1.2fr_auto] sm:gap-4 sm:px-10 sm:py-7">
+                <span class="relative font-mono text-sm text-muted transition-colors group-hover:text-navy-950">{String(index + 1).padStart(2, '0')}</span>
+                <span class="relative font-display text-[1.1rem] leading-tight font-black italic text-primary transition-colors group-hover:text-navy-950 sm:text-2xl" style="font-stretch: 118%">
+                  {service.title}
+                </span>
+                <span class="relative hidden text-muted transition-colors group-hover:text-navy-950 sm:block">{service.short}</span>
+                <span class="relative pr-2 text-xl text-accent-text transition group-hover:translate-x-1 group-hover:text-navy-950" aria-hidden="true">→</span>
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="border-t border-border bg-bg-alt py-24" aria-labelledby="projets-titre">
+    <div class="container-site">
+      <div class="flex flex-wrap items-end justify-between gap-6">
+        <SectionHeading id="projets-titre" eyebrow="Réalisations" title="Des projets concrets, du code qui tourne" />
+        <a href="/realisations/" class="btn-ghost" data-reveal>Toutes les réalisations →</a>
+      </div>
+      <div class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {
+          projects.map((project, index) => (
+            <div data-reveal style={`--reveal-delay: ${index * 90}ms`} class="flex">
+              <ProjectCard project={project} />
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="border-t border-border py-24" aria-labelledby="promesses-titre">
+    <div class="container-site">
+      <SectionHeading id="promesses-titre" eyebrow="Pourquoi Sauv'Web" title="Travailler avec moi, concrètement" />
+      <div class="mt-12 grid gap-x-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          promises.map((promise, index) => (
+            <div data-reveal style={`--reveal-delay: ${index * 70}ms`}>
+              <span class="block h-1.5 w-10 -skew-x-[22deg] bg-teal-500 dark:shadow-[0_0_14px_rgb(60_242_220/0.6)]" aria-hidden="true" />
+              <h3 class="mt-5 text-lg">{promise.title}</h3>
+              <p class="mt-2 text-muted">{promise.text}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CtaBand />
+</BaseLayout>
+
+<style>
+  .service-row::before {
+    content: '';
+    position: absolute;
+    inset: 0 1.25rem;
+    background: var(--color-teal-500);
+    transform: skewX(-22deg) scaleX(0);
+    transform-origin: left;
+    transition: transform 0.45s var(--ease-out-expo);
+  }
+
+  .service-row:hover::before,
+  .service-row:focus-visible::before {
+    transform: skewX(-22deg) scaleX(1);
+  }
+</style>

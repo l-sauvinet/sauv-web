@@ -1,0 +1,82 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
+import { services } from '../data/services';
+---
+
+<BaseLayout
+  crumbs={[{ label: 'Services' }]}
+  title="Services : applications web, mobiles et logiciels sur mesure"
+  description="Création d'applications web et mobiles, logiciels sur mesure, maintenance et conseil informatique pour TPE, PME et indépendants à Chambéry et en Savoie."
+>
+  <PageHeader
+    eyebrow="Services"
+    title="Des outils pensés pour votre activité"
+    intro="Du site métier à l'application mobile, je m'occupe de tout : comprendre votre besoin, concevoir, développer, mettre en ligne et faire évoluer."
+  >
+    <nav aria-label="Aller à un service" class="mt-10 flex flex-wrap gap-2" data-reveal style="--reveal-delay: 180ms">
+      {
+        services.map((service) => (
+          <a href={`#${service.id}`} class="rounded-sm border border-border px-3 py-1.5 text-sm text-muted transition-colors hover:border-teal-500 hover:text-primary">
+            {service.title}
+          </a>
+        ))
+      }
+    </nav>
+  </PageHeader>
+
+  <div class="container-site">
+    {
+      services.map((service, index) => (
+        <section id={service.id} class="grid scroll-mt-40 gap-10 border-b border-border py-16 last:border-b-0 sm:py-20 lg:grid-cols-[1fr_1.1fr] lg:gap-16" aria-labelledby={`${service.id}-titre`}>
+          <div data-reveal>
+            <div class="flex items-center gap-4">
+              <span class="service-icon grid size-14 place-items-center text-accent-text">
+                <Icon path={service.icon} class="size-7" />
+              </span>
+              <span class="font-mono text-sm text-muted">{String(index + 1).padStart(2, '0')}</span>
+            </div>
+            <h2 id={`${service.id}-titre`} class="mt-6 text-3xl italic sm:text-4xl" style="font-stretch: 122%; font-weight: 900">
+              {service.title}
+            </h2>
+            <p class="mt-5 text-lg text-muted">{service.description}</p>
+          </div>
+
+          <div class="space-y-8" data-reveal style="--reveal-delay: 100ms">
+            <div class="rounded-lg border border-border bg-surface p-7">
+              <h3 class="label-mono text-accent-text">Ce que vous y gagnez</h3>
+              <ul class="prose-site mt-5 text-base">
+                {service.benefits.map((benefit) => <li>{benefit}</li>)}
+              </ul>
+            </div>
+            <p class="text-muted">
+              <span class="font-semibold text-primary">Exemples : </span>
+              {service.examples}
+            </p>
+          </div>
+        </section>
+      ))
+    }
+  </div>
+
+  <CtaBand title="Vous ne savez pas quel service choisir ?" highlight="Décrivez votre besoin." />
+</BaseLayout>
+
+<style>
+  .service-icon {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .service-icon::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    transform: skewX(-14deg);
+    border: 1px solid color-mix(in srgb, var(--color-teal-500) 60%, transparent);
+    background: color-mix(in srgb, var(--color-teal-500) 10%, transparent);
+  }
+</style>

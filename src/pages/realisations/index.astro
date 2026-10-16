@@ -1,0 +1,35 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import CtaBand from '../../components/CtaBand.astro';
+
+const projects = (await getCollection('projets')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<BaseLayout
+  crumbs={[{ label: 'Réalisations' }]}
+  title="Réalisations"
+  description="Projets développés par Sauv'Web, développeur freelance à Chambéry : applications web, logiciels et outils de gestion en ligne."
+>
+  <PageHeader
+    eyebrow="Réalisations"
+    title="Des projets concrets, du code qui tourne"
+    intro="Des applications réellement en ligne, conçues et développées de A à Z. Chaque projet a sa page avec le besoin, ce que j'ai construit et les choix techniques."
+  />
+
+  <section class="py-20" aria-label="Liste des projets">
+    <div class="container-site grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {
+        projects.map((project, index) => (
+          <div data-reveal style={`--reveal-delay: ${index * 80}ms`} class="flex">
+            <ProjectCard project={project} headingLevel="h2" />
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <CtaBand title="Votre projet pourrait être le prochain." highlight="On en parle ?" />
+</BaseLayout>

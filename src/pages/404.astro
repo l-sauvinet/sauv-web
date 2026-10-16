@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SpeedStripes from '../components/SpeedStripes.astro';
+---
+
+<BaseLayout title="Page introuvable" noindex crumbs={[{ label: 'Page introuvable' }]}>
+  <section class="relative overflow-hidden">
+    <div class="container-site grid min-h-[70svh] items-center gap-12 py-20 lg:grid-cols-[1.2fr_1fr]">
+      <div>
+        <p class="label-mono text-accent-text">Erreur 404</p>
+        <h1 class="mt-4 text-5xl leading-[1] italic sm:text-7xl" style="font-stretch: 125%; font-weight: 900">
+          Cette page a pris un autre chemin.
+        </h1>
+        <p class="mt-6 max-w-lg text-lg text-muted">
+          L'adresse est peut-être mal saisie, ou la page a été déplacée. Pas de panique, voici de quoi repartir.
+        </p>
+        <div class="mt-9 flex flex-wrap items-center gap-x-6 gap-y-4">
+          <a href="/" class="slant-solid"><span>Retour à l'accueil</span></a>
+          <a href="/contact/" class="btn-ghost">Me contacter</a>
+        </div>
+      </div>
+      <SpeedStripes class="hidden h-80 lg:block" />
+    </div>
+  </section>
+</BaseLayout>

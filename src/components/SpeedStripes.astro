@@ -1,0 +1,59 @@
+---
+import LogoMark from '../assets/logo-sw.svg';
+
+interface Props {
+  class?: string;
+  logo?: boolean;
+}
+
+const { class: className = '', logo = true } = Astro.props;
+---
+
+<div class:list={['speed-stripes', !/(^|\s)(absolute|fixed)(\s|$)/.test(className) && 'relative', className]} aria-hidden="true">
+  <div class="stripe left-[12%] w-[22%]"></div>
+  <div class="stripe stripe-solid left-[40%] w-[22%]"></div>
+  <div class="stripe left-[68%] w-[10%]"></div>
+  {
+    logo && (
+      <LogoMark class="absolute top-1/2 left-1/2 w-[78%] -translate-x-1/2 -translate-y-1/2 text-primary drop-shadow-[0_20px_40px_rgb(0_0_0/0.45)]" />
+    )
+  }
+</div>
+
+<style>
+  .stripe {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    transform: skewX(-22deg);
+    border: 1px solid var(--stripe);
+    background: color-mix(in srgb, var(--stripe-fill) 6%, transparent);
+    box-shadow:
+      0 0 18px var(--stripe-glow),
+      inset 0 0 18px color-mix(in srgb, var(--stripe-glow) 45%, transparent);
+  }
+
+  .stripe-solid {
+    background: var(--stripe-fill);
+    box-shadow: 0 0 40px var(--stripe-glow);
+  }
+
+  .speed-stripes .stripe {
+    animation: slide-in 0.9s var(--ease-out-expo) both;
+  }
+
+  .speed-stripes .stripe:nth-child(2) {
+    animation-delay: 0.08s;
+  }
+
+  .speed-stripes .stripe:nth-child(3) {
+    animation-delay: 0.16s;
+  }
+
+  @keyframes slide-in {
+    from {
+      opacity: 0;
+      translate: 18% 0;
+    }
+  }
+</style>

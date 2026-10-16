@@ -1,0 +1,65 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Todo from '../components/Todo.astro';
+import { site, isTodo } from '../data/site';
+
+const { owner, address, host } = site;
+---
+
+<BaseLayout crumbs={[{ label: 'Mentions légales' }]} title="Mentions légales" description="Mentions légales du site sauv-web.fr : éditeur, hébergeur et propriété intellectuelle.">
+  <PageHeader eyebrow="Informations légales" title="Mentions légales" />
+
+  <div class="container-site py-16">
+    <div class="prose-site max-w-3xl">
+      <h2>Éditeur du site</h2>
+      <p>
+        Le site <strong>sauv-web.fr</strong> est édité par <strong>{owner.name}</strong>, entrepreneur individuel (EI),
+        exerçant sous le nom commercial <strong>{site.name}</strong>.
+      </p>
+      <ul>
+        <li>Adresse : {address.street}, {address.postalCode} {address.city}, {address.country}</li>
+        <li>SIREN : {site.siren}</li>
+        {isTodo(site.siret) ? <Todo as="li" label="SIRET (en attente de l'INSEE)" /> : <li>SIRET : {site.siret}</li>}
+        <li>Email : <a href={`mailto:${site.email}`}>{site.email}</a></li>
+        {isTodo(site.phone) ? <Todo as="li" label="Numéro de téléphone (obligatoire pour l'éditeur d'un site professionnel)" /> : <li>Téléphone : <a href={`tel:${site.phoneIntl}`}>{site.phone}</a></li>}
+        <li>{site.vatMention}</li>
+      </ul>
+      <p>Directeur de la publication : {owner.name}.</p>
+
+      <h2>Hébergeur</h2>
+      <ul>
+        <li>{host.name}, {host.legalForm}</li>
+        <li>SIRET : {host.siret}</li>
+        <li>Adresse : {host.address}</li>
+        <li>Téléphone : {host.phone}</li>
+        <li>Site : <a href={host.url} rel="noopener">{host.url.replace('https://', '')}</a></li>
+      </ul>
+
+      <h2>Propriété intellectuelle</h2>
+      <p>
+        L'ensemble des contenus de ce site (textes, logo, visuels, mise en page, code) est la propriété de {owner.name},
+        sauf mention contraire. Toute reproduction, représentation ou adaptation, totale ou partielle, sans autorisation
+        écrite préalable est interdite.
+      </p>
+      <p>
+        Les noms et logos des projets présentés dans la page Réalisations appartiennent à leurs propriétaires respectifs.
+        Les polices de caractères utilisées (Archivo, Instrument Sans, JetBrains Mono) sont distribuées sous licence SIL
+        Open Font License.
+      </p>
+
+      <h2>Données personnelles et cookies</h2>
+      <p>
+        Ce site ne dépose aucun cookie et n'utilise aucun outil de suivi. Le traitement des informations transmises via
+        le formulaire de contact est détaillé dans la <a href="/confidentialite/">politique de confidentialité</a>.
+      </p>
+
+      <h2>Responsabilité</h2>
+      <p>
+        {site.name} s'efforce de fournir des informations exactes et à jour, sans pouvoir garantir l'absence d'erreur.
+        Les liens vers des sites externes sont fournis à titre d'information : {site.name} n'est pas responsable de leur
+        contenu.
+      </p>
+    </div>
+  </div>
+</BaseLayout>

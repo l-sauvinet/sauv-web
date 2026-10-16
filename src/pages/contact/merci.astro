@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { responseDelay } from '../../data/site';
+---
+
+<BaseLayout title="Message envoyé" noindex crumbs={[{ label: 'Contact', href: '/contact/' }, { label: 'Message envoyé' }]}>
+  <section class="container-site py-24 sm:py-32">
+    <p class="label-mono text-accent-text">Message envoyé</p>
+    <h1 class="mt-4 max-w-3xl text-5xl leading-[1] italic sm:text-6xl" style="font-stretch: 125%; font-weight: 900">
+      Merci, j'ai bien reçu votre demande.
+    </h1>
+    <p class="mt-6 max-w-xl text-lg text-muted">
+      Je reviens vers vous sous {responseDelay}. En attendant, vous pouvez jeter un œil à mes réalisations.
+    </p>
+    <div class="mt-9 flex flex-wrap items-center gap-x-6 gap-y-4">
+      <a href="/realisations/" class="slant-solid"><span>Voir mes réalisations</span></a>
+      <a href="/" class="btn-ghost">Retour à l'accueil</a>
+    </div>
+  </section>
+</BaseLayout>

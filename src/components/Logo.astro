@@ -1,0 +1,11 @@
+---
+import LogoMark from '../assets/logo-sw.svg';
+
+interface Props {
+  class?: string;
+}
+
+const { class: className = '' } = Astro.props;
+---
+
+<LogoMark class:list={['h-11 w-auto text-primary', className]} aria-hidden="true" />

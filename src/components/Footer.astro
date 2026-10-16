@@ -1,0 +1,83 @@
+---
+import Logo from './Logo.astro';
+import { nav, site, isTodo } from '../data/site';
+
+const socials = [
+  { label: 'LinkedIn', href: site.socials.linkedin },
+  { label: 'GitHub', href: site.socials.github },
+  { label: 'Malt', href: site.socials.malt },
+].filter((social) => !isTodo(social.href));
+
+const legal = [
+  { href: '/contact/', label: 'Contact' },
+  { href: '/mentions-legales/', label: 'Mentions légales' },
+  { href: '/confidentialite/', label: 'Confidentialité' },
+];
+
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-border bg-bg-alt">
+  <div class="container-site grid grid-cols-2 gap-x-6 gap-y-10 py-12 sm:py-14 md:grid-cols-[1.4fr_1fr_1fr]">
+    <div class="col-span-2 space-y-4 md:col-span-1">
+      <p class="flex items-center gap-3 text-primary">
+        <Logo />
+        <span class="brand-name text-2xl leading-none">Sauv'Web</span>
+      </p>
+      <p class="max-w-sm text-sm text-muted">
+        Développeur freelance à Chambéry : applications web &amp; mobiles, logiciels sur mesure et conseil pour les
+        TPE, PME et indépendants de Savoie et d'ailleurs.
+      </p>
+      <p class="flex flex-col gap-1 text-sm font-semibold">
+        <a href={`mailto:${site.email}`} class="text-accent-text hover:underline">{site.email}</a>
+        <a href={`tel:${site.phoneIntl}`} class="text-accent-text hover:underline">{site.phone}</a>
+      </p>
+    </div>
+
+    <nav aria-label="Plan du site">
+      <h2 class="mb-4 text-sm font-semibold">Navigation</h2>
+      <ul class="space-y-2 text-sm">
+        {
+          nav.map((item) => (
+            <li>
+              <a href={item.href} class="text-muted hover:text-primary">
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div>
+      <h2 class="mb-4 text-sm font-semibold">Informations</h2>
+      <ul class="space-y-2 text-sm">
+        {
+          legal.map((item) => (
+            <li>
+              <a href={item.href} class="text-muted hover:text-primary">
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+        {
+          socials.map((social) => (
+            <li>
+              <a href={social.href} class="text-muted hover:text-primary" rel="me noopener" target="_blank">
+                {social.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+
+  <div class="border-t border-border">
+    <div class="container-site flex flex-col gap-2 py-6 text-xs text-muted sm:flex-row sm:justify-between">
+      <p>© {year} Sauv'Web – {site.owner.legalName}</p>
+      <p>{site.vatMention}</p>
+    </div>
+  </div>
+</footer>

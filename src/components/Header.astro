@@ -1,0 +1,125 @@
+---
+import Logo from './Logo.astro';
+import ThemeToggle from './ThemeToggle.astro';
+import Breadcrumb, { type Crumb } from './Breadcrumb.astro';
+import { nav } from '../data/site';
+
+interface Props {
+  crumbs?: Crumb[];
+}
+
+const { crumbs } = Astro.props;
+const current = Astro.url.pathname;
+const isActive = (href: string) => current.startsWith(href);
+---
+
+<header class="sticky top-0 z-50 border-b border-transparent bg-bg/90 backdrop-blur-md transition-colors" data-header>
+  <div class="container-site flex h-20 items-center justify-between gap-6">
+    <a href="/" class="rounded-sm" aria-label="Sauv'Web, retour à l'accueil">
+      <Logo />
+    </a>
+
+    <nav aria-label="Navigation principale" class="ml-auto hidden md:block">
+      <ul class="flex items-center gap-8 text-[1.05rem] font-medium">
+        {
+          nav.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                aria-current={isActive(item.href) ? 'page' : undefined}
+                class="py-2 text-muted transition-colors hover:text-primary aria-[current=page]:text-primary aria-[current=page]:underline aria-[current=page]:decoration-teal-500 aria-[current=page]:decoration-2 aria-[current=page]:underline-offset-8"
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="flex items-center gap-4">
+      <a href="/contact/" class="slant-solid hidden px-6 py-3 text-base sm:inline-flex"><span>Demander un devis</span></a>
+      <ThemeToggle />
+      <button
+        type="button"
+        class="grid size-11 place-items-center rounded-md border border-border text-primary md:hidden"
+        aria-controls="mobile-menu"
+        aria-expanded="false"
+        aria-label="Ouvrir le menu"
+        data-menu-button
+      >
+        <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <path d="M4 8h16M4 16h16" data-icon-open />
+          <path d="M6 6l12 12M18 6 6 18" class="hidden" data-icon-close />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  {
+    crumbs && (
+      <div class="border-t border-border">
+        <div class="container-site py-2.5">
+          <Breadcrumb items={crumbs} />
+        </div>
+      </div>
+    )
+  }
+
+  <nav id="mobile-menu" aria-label="Navigation mobile" class="hidden border-t border-border bg-bg md:hidden" data-menu>
+    <ul class="container-site flex flex-col py-3">
+      <li>
+        <a
+          href="/"
+          aria-current={current === '/' ? 'page' : undefined}
+          class="block border-b border-border py-4 font-display text-lg font-semibold text-primary aria-[current=page]:text-accent-text"
+        >
+          Accueil
+        </a>
+      </li>
+      {
+        nav.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              aria-current={isActive(item.href) ? 'page' : undefined}
+              class="block border-b border-border py-4 font-display text-lg font-semibold text-primary aria-[current=page]:text-accent-text"
+            >
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+      <li class="pt-4 pb-2">
+        <a href="/contact/" class="slant-solid w-full"><span>Demander un devis</span></a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<script>
+  const header = document.querySelector<HTMLElement>('[data-header]');
+  const button = document.querySelector<HTMLButtonElement>('[data-menu-button]');
+  const menu = document.querySelector<HTMLElement>('[data-menu]');
+
+  const setOpen = (open: boolean) => {
+    if (!button || !menu) return;
+    button.setAttribute('aria-expanded', String(open));
+    button.setAttribute('aria-label', open ? 'Fermer le menu' : 'Ouvrir le menu');
+    menu.classList.toggle('hidden', !open);
+    button.querySelector('[data-icon-open]')?.classList.toggle('hidden', open);
+    button.querySelector('[data-icon-close]')?.classList.toggle('hidden', !open);
+  };
+
+  button?.addEventListener('click', () => setOpen(button.getAttribute('aria-expanded') !== 'true'));
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && button?.getAttribute('aria-expanded') === 'true') {
+      setOpen(false);
+      button.focus();
+    }
+  });
+
+  const onScroll = () => header?.classList.toggle('border-border', window.scrollY > 8);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+</script>

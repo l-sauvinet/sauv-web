@@ -1,0 +1,85 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import { site } from '../data/site';
+
+const updatedAt = '16 octobre 2026';
+---
+
+<BaseLayout
+  crumbs={[{ label: 'Confidentialité' }]}
+  title="Politique de confidentialité"
+  description="Comment Sauv'Web traite les données personnelles transmises via le formulaire de contact : finalité, durée de conservation et droits."
+>
+  <PageHeader eyebrow="Vos données" title="Politique de confidentialité" intro={`Dernière mise à jour : ${updatedAt}.`} />
+
+  <div class="container-site py-16">
+    <div class="prose-site max-w-3xl">
+      <h2>En bref</h2>
+      <ul>
+        <li>Aucun cookie, aucun outil de mesure d'audience, aucune publicité.</li>
+        <li>Les informations du formulaire servent uniquement à répondre à votre demande.</li>
+        <li>Elles ne sont jamais vendues, ni transmises à des tiers à des fins commerciales.</li>
+      </ul>
+
+      <h2>Responsable du traitement</h2>
+      <p>
+        {site.owner.name}, entrepreneur individuel ({site.name}), {site.address.street}, {site.address.postalCode}
+        {site.address.city}. Contact : <a href={`mailto:${site.email}`}>{site.email}</a>.
+      </p>
+
+      <h2>Données collectées</h2>
+      <p>
+        Lorsque vous utilisez le formulaire de contact : votre nom, votre adresse email, le nom de votre entreprise
+        (facultatif), le type de projet, le budget envisagé et votre message. Si vous m'écrivez directement par email, je
+        reçois les informations que vous choisissez de transmettre.
+      </p>
+
+      <h2>Finalité et base légale</h2>
+      <p>
+        Ces données servent à répondre à votre demande, à échanger sur votre projet et à établir un devis. Ce traitement
+        repose sur les mesures précontractuelles prises à votre demande (article 6.1.b du RGPD).
+      </p>
+
+      <h2>Destinataires et hébergement</h2>
+      <p>
+        Le site ne stocke pas vos messages : le formulaire les transmet par email, via le serveur de l'hébergeur
+        <strong>{site.host.name}</strong> (France), à la boîte de réception de {site.name}, hébergée par Google (Gmail).
+        Google peut traiter ces données en dehors de l'Union européenne, dans le cadre du Data Privacy Framework
+        UE-États-Unis. Seul {site.owner.name} a accès à vos messages.
+      </p>
+      <p>
+        Pour limiter les abus, une empreinte non réversible de votre adresse IP est conservée au maximum une heure sur le
+        serveur. Comme tout hébergeur, {site.host.name} enregistre des journaux techniques de connexion pour des raisons de
+        sécurité.
+      </p>
+
+      <h2>Durée de conservation</h2>
+      <ul>
+        <li>Sans suite donnée à votre demande : 3 ans après notre dernier échange, puis suppression.</li>
+        <li>
+          Si nous travaillons ensemble : pendant la durée de la mission, puis le temps imposé par les obligations légales
+          (par exemple 10 ans pour les pièces comptables).
+        </li>
+      </ul>
+
+      <h2>Cookies et stockage local</h2>
+      <p>
+        Ce site ne dépose aucun cookie. Votre choix de thème (clair ou sombre) est enregistré uniquement dans votre
+        navigateur, n'est jamais transmis et peut être effacé à tout moment. Les polices de caractères sont hébergées sur
+        le site lui-même : aucun appel n'est fait à un service tiers comme Google Fonts.
+      </p>
+
+      <h2>Vos droits</h2>
+      <p>
+        Vous pouvez à tout moment accéder à vos données, les faire rectifier ou supprimer, vous opposer à leur traitement,
+        en demander la limitation ou la portabilité. Il suffit d'écrire à <a href={`mailto:${site.email}`}>{site.email}</a>.
+        Je vous réponds dans un délai d'un mois au maximum.
+      </p>
+      <p>
+        Si vous estimez que vos droits ne sont pas respectés, vous pouvez adresser une réclamation à la CNIL
+        (<a href="https://www.cnil.fr" rel="noopener">cnil.fr</a>).
+      </p>
+    </div>
+  </div>
+</BaseLayout>

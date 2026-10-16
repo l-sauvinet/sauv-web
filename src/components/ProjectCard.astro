@@ -1,0 +1,124 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  project: CollectionEntry<'projets'>;
+  headingLevel?: 'h2' | 'h3';
+}
+
+const { project, headingLevel: Heading = 'h3' } = Astro.props;
+const { title, summary, category, status, stack, logo, color, cover, coverAlt, demo, demoLabel, access } = project.data;
+const href = `/realisations/${project.id}/`;
+---
+
+<article style={`--project: ${color}`} class="project-card group relative flex flex-col overflow-hidden rounded-lg border border-border bg-surface transition-colors">
+  <div class="relative aspect-[16/10] overflow-hidden border-b border-border bg-bg-alt">
+    {
+      cover ? (
+        <Image
+          src={cover}
+          alt={coverAlt ?? ''}
+          widths={[480, 800, 1200]}
+          sizes="(min-width: 1024px) 380px, (min-width: 768px) 50vw, 100vw"
+          class="size-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+        />
+      ) : (
+        <div class="absolute inset-0" aria-hidden="true">
+          <div class="cover-stripe left-[30%] w-[16%]" />
+          <div class="cover-stripe cover-stripe-solid left-[54%] w-[12%]" />
+          {logo && (
+            <img
+              src={logo.src}
+              alt=""
+              width={logo.width}
+              height={logo.height}
+              loading="lazy"
+              decoding="async"
+              class="project-logo absolute top-1/2 left-1/2 h-[56%] w-auto -translate-x-1/2 -translate-y-1/2"
+            />
+          )}
+          {!logo && (
+            <span
+              class="absolute bottom-5 left-6 font-display text-5xl leading-none font-black text-primary/90 lg:text-4xl xl:text-5xl"
+              style="font-stretch: 125%; font-style: italic"
+            >
+              {title}
+            </span>
+          )}
+        </div>
+      )
+    }
+    <span class="absolute top-4 left-4 rounded-sm bg-bg/80 px-2 py-1 project-accent font-mono text-[0.68rem] tracking-wider uppercase backdrop-blur">
+      {status}
+    </span>
+  </div>
+
+  <div class="flex flex-1 flex-col p-6">
+    <p class="label-mono">{category}</p>
+    <Heading class="mt-2 text-2xl italic" style="font-stretch: 118%; font-weight: 900">
+      <a href={href} class="after:absolute after:inset-0">{title}</a>
+    </Heading>
+    <p class="mt-3 text-muted">{summary}</p>
+    <ul class="mt-5 flex flex-wrap gap-2" aria-label="Technologies">
+      {stack.map((tech) => <li class="rounded-sm border border-border px-2 py-1 text-xs text-muted">{tech}</li>)}
+    </ul>
+    {access && <p class="mt-4 text-sm text-muted italic">{access}</p>}
+    <div class="mt-auto flex flex-wrap items-center justify-between gap-x-6 gap-y-3 pt-6 text-sm font-semibold">
+      <span class="project-accent" aria-hidden="true">
+        Voir le projet <span class="inline-block transition-transform group-hover:translate-x-1">→</span>
+      </span>
+      {
+        demo && (
+          <a href={demo} class="relative z-10 text-primary underline decoration-teal-500/50 underline-offset-4 hover:decoration-teal-500" rel="noopener" target="_blank">
+            {demoLabel} ↗<span class="sr-only"> (nouvel onglet)</span>
+          </a>
+        )
+      }
+    </div>
+  </div>
+</article>
+
+<style>
+  .cover-stripe {
+    position: absolute;
+    top: -10%;
+    bottom: -10%;
+    transform: skewX(-22deg);
+    border: 1px solid color-mix(in srgb, var(--project) 70%, transparent);
+    box-shadow: 0 0 18px color-mix(in srgb, var(--project) 30%, transparent);
+    transition: translate 0.6s var(--ease-out-expo);
+  }
+
+  .cover-stripe-solid {
+    background: color-mix(in srgb, var(--project) 22%, transparent);
+  }
+
+  .project-logo {
+    filter: drop-shadow(0 0 24px color-mix(in srgb, var(--project) 55%, transparent));
+    transition:
+      scale 0.6s var(--ease-out-expo),
+      rotate 0.6s var(--ease-out-expo);
+  }
+
+  .project-card:hover .project-logo {
+    scale: 1.06;
+    rotate: -4deg;
+  }
+
+  .project-accent {
+    color: color-mix(in srgb, var(--project) 62%, #000);
+  }
+
+  :global([data-theme='dark']) .project-accent {
+    color: var(--project);
+  }
+
+  .project-card:hover {
+    border-color: color-mix(in srgb, var(--project) 70%, transparent);
+  }
+
+  .project-card:hover .cover-stripe {
+    translate: -8% 0;
+  }
+</style>

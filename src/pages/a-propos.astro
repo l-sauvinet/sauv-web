@@ -1,0 +1,117 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Todo from '../components/Todo.astro';
+import { site } from '../data/site';
+
+const values = [
+  {
+    title: 'Comprendre avant de coder',
+    text: "Je commence toujours par votre métier et vos contraintes. Le bon outil est celui qui s'adapte à votre façon de travailler.",
+  },
+  {
+    title: 'Parler simplement',
+    text: 'Pas de jargon : je vous explique les choix techniques avec des mots clairs, pour que vous puissiez décider en connaissance de cause.',
+  },
+  {
+    title: 'Montrer souvent',
+    text: "Vous voyez le projet avancer à chaque étape. On corrige le tir tôt, plutôt que de découvrir une surprise à la fin.",
+  },
+  {
+    title: 'Du code propre et durable',
+    text: 'Un code lisible, testé et documenté, que vous ou un autre développeur pourrez faire évoluer dans plusieurs années.',
+  },
+];
+
+const stacks = [
+  { group: 'Interfaces web', items: ['Vue.js', 'Nuxt', 'React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Astro'] },
+  { group: 'Serveur & données', items: ['Node.js / Express', 'PHP / Symfony', 'Python', 'Firebase', 'MySQL'] },
+  { group: 'Mobile & bureau', items: ['.NET MAUI', 'C# / WPF', 'Tauri'] },
+  { group: 'Outils', items: ['Git', 'Vite', 'Tests automatisés', 'IA (Claude, Ollama)'] },
+];
+---
+
+<BaseLayout
+  crumbs={[{ label: 'À propos' }]}
+  title="À propos"
+  description={`${site.owner.name}, développeur web et mobile freelance à Chambéry (Savoie). Parcours, façon de travailler et technologies.`}
+>
+  <PageHeader
+    eyebrow="À propos"
+    title="Lucas Sauvinet, développeur web & mobile"
+    intro="Je conçois des applications sur mesure depuis Jacob-Bellecombette, à côté de Chambéry. J'ai créé Sauv'Web pour proposer aux TPE, PME et indépendants un développeur proche, joignable et transparent."
+  />
+
+  <section class="py-20" aria-labelledby="parcours-titre">
+    <div class="container-site grid gap-12 lg:grid-cols-[1fr_1.4fr] lg:gap-20">
+      <div>
+        <SectionHeading id="parcours-titre" eyebrow="Parcours" title="Concepteur développeur, en alternance" />
+      </div>
+      <div class="prose-site" data-reveal style="--reveal-delay: 100ms">
+        <p>
+          Je développe des applications depuis plusieurs années : des outils de gestion, des applications mobiles, un
+          gestionnaire de mots de passe chiffré, un assistant basé sur l'intelligence artificielle… Chaque projet m'a
+          appris quelque chose de nouveau, et c'est cette curiosité qui me pousse à toujours chercher la solution la
+          plus adaptée.
+        </p>
+        <p>
+          Je prépare actuellement le titre de <strong>Concepteur Développeur d'Applications</strong> (CDA, niveau
+          bac+3) en alternance. Cette formation va au-delà du code : elle couvre aussi la
+          <strong>conception</strong>, le <strong>management</strong> et la <strong>gestion de projet</strong>. Concrètement,
+          je sais cadrer un besoin, découper un projet en étapes, suivre un planning et rendre compte de l'avancement.
+        </p>
+        <p>
+          En entreprise, je travaille chaque semaine en équipe sur des projets professionnels, avec les méthodes utilisées
+          au quotidien : revue de code, tests automatisés, suivi des tâches. Ce que j'y apprends profite directement à mes
+          clients.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-t border-border bg-bg-alt py-20" aria-labelledby="facon-titre">
+    <div class="container-site">
+      <SectionHeading id="facon-titre" eyebrow="Ma façon de travailler" title="Ce à quoi vous pouvez vous attendre" />
+      <div class="mt-12 grid gap-x-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          values.map((value, index) => (
+            <div data-reveal style={`--reveal-delay: ${index * 70}ms`}>
+              <span class="block h-1.5 w-10 -skew-x-[22deg] bg-teal-500 dark:shadow-[0_0_14px_rgb(60_242_220/0.6)]" aria-hidden="true" />
+              <h3 class="mt-5 text-lg">{value.title}</h3>
+              <p class="mt-2 text-muted">{value.text}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="border-t border-border py-20" aria-labelledby="techno-titre">
+    <div class="container-site">
+      <SectionHeading id="techno-titre" eyebrow="Technologies" title="Les outils que j’utilise au quotidien">
+        <p class="mt-5 text-lg text-muted">
+          Je choisis la technologie en fonction de votre projet, pas l'inverse. Voici celles que je maîtrise.
+        </p>
+      </SectionHeading>
+      <dl class="mt-12 grid gap-px overflow-hidden rounded-lg border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
+        {
+          stacks.map((stack, index) => (
+            <div class="bg-bg p-6" data-reveal style={`--reveal-delay: ${index * 60}ms`}>
+              <dt class="label-mono text-accent-text">{stack.group}</dt>
+              <dd class="mt-4">
+                <ul class="space-y-2">
+                  {stack.items.map((item) => <li class="font-semibold text-primary">{item}</li>)}
+                </ul>
+              </dd>
+            </div>
+          ))
+        }
+      </dl>
+      <Todo label="Vérifier la liste des technologies (en retirer ou en ajouter)" />
+    </div>
+  </section>
+
+  <CtaBand title="Envie de travailler ensemble ?" highlight="Écrivez-moi." />
+</BaseLayout>
