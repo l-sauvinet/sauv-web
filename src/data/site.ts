@@ -26,7 +26,7 @@ export const site = {
   },
   geo: { latitude: 45.5577, longitude: 5.9145 },
   siren: '131 644 312',
-  siret: TODO,
+  siret: '131 644 312 00012',
   vatMention: 'TVA non applicable, art. 293 B du CGI',
   host: {
     name: 'o2switch',
